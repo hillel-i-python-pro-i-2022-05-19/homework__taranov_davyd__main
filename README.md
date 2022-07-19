@@ -1,1 +1,0 @@
-# homework__taranov_davyd__main
