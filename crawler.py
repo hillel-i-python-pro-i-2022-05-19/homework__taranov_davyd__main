@@ -63,14 +63,13 @@ async def get_some_links(urls: T_URL, max_number_of_links: int, crawling_depth: 
                 new_urls += await get_urls(new_text, crawling_depth)
         result = new_urls[:max_number_of_links]
         logging.info(f'end {len(result)}')
-        return new_urls
+        return result
 
 
 async def main(max_number_of_links, crawling_depth):
     json_links_file_list = _read_json_links_file(path)
     tasks = [
-        get_some_links(urls=url, max_number_of_links=max_number_of_links, crawling_depth=crawling_depth),
-        get_some_links(urls=url, max_number_of_links=max_number_of_links, crawling_depth=crawling_depth),
+        get_some_links(urls=url, max_number_of_links=max_number_of_links, crawling_depth=crawling_depth)
     ]
     result = await asyncio.gather(*tasks)
     _write_json_links_file(path=path, urls=result[0], read_jason=json_links_file_list)
