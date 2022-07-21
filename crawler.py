@@ -66,10 +66,14 @@ async def get_some_links(urls: T_URL, max_number_of_links: int, crawling_depth: 
         return result
 
 
-async def main(max_number_of_links, crawling_depth):
+async def main(first_arg_for_first_function, second_arg_for_first_function,
+               first_arg_for_second_function, second_arg_for_second_function):
     json_links_file_list = _read_json_links_file(path)
     tasks = [
-        get_some_links(urls=url, max_number_of_links=max_number_of_links, crawling_depth=crawling_depth)
+        get_some_links(urls=url, max_number_of_links=first_arg_for_first_function,
+                       crawling_depth=second_arg_for_first_function),
+        get_some_links(urls=url, max_number_of_links=first_arg_for_second_function,
+                       crawling_depth=second_arg_for_second_function)
     ]
     result = await asyncio.gather(*tasks)
     _write_json_links_file(path=path, urls=result[0], read_jason=json_links_file_list)
@@ -77,13 +81,16 @@ async def main(max_number_of_links, crawling_depth):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("action")
-parser.add_argument("max_number_of_links", nargs='?', default=0)
-parser.add_argument("crawling_depth", nargs='?', default=0)
+parser.add_argument("first_arg_for_first_function", nargs='?', default=0)
+parser.add_argument("second_arg_for_first_function", nargs='?', default=0)
+parser.add_argument("first_arg_for_second_function", nargs='?', default=0)
+parser.add_argument("second_arg_for_second_function", nargs='?', default=0)
 args = parser.parse_args()
 
 try:
     if args.action == "GET_LINKS":
         init_logging()
-        asyncio.run(main(int(args.max_number_of_links), int(args.crawling_depth)))
+        asyncio.run(main(int(args.first_arg_for_first_function), int(args.second_arg_for_first_function),
+                         int(args.first_arg_for_second_function), int(args.second_arg_for_second_function)))
 except ValueError:
     print('Something went wrong :(')
