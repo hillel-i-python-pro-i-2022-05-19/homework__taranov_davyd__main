@@ -42,8 +42,8 @@ async def get_text_from_url(url) -> T_HTML_TEXT:
 async def get_urls(text: T_HTML_TEXT, crawling_depth: int) -> T_URLS:
     soup = bs4.BeautifulSoup(markup=text, features='html.parser')
     urls = [link_element.get('href')
-            for link_element in soup.find_all('a')
-            if 'https' in link_element.get('href')[:5]][:crawling_depth]
+            for link_element in soup.find_all('a')[:crawling_depth - 1]
+            if 'https' in link_element.get('href')[:5]]
     return urls
 
 
