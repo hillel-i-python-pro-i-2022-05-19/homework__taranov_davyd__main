@@ -3,9 +3,7 @@ import asyncio
 import contextlib
 import json
 import logging
-from contextvars import ContextVar
-from typing import List, Dict, Union
-from typing import TypeAlias
+from typing import List, Dict, Union, TypeAlias
 
 import aiohttp
 import bs4
@@ -16,8 +14,6 @@ from settings import path, url
 T_URL: TypeAlias = str
 T_URLS: TypeAlias = list[T_URL]
 T_HTML_TEXT: TypeAlias = str
-
-MyUrls = ContextVar('urls', default=[])
 
 
 def _read_json_links_file(path: str) -> Union[List, Dict]:
