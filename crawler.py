@@ -28,7 +28,7 @@ def _read_json_links_file(path: str) -> Union[List, Dict]:
 
 def _write_json_links_file(path: str, urls: list, read_jason: list or dict):
     with open(path, "w") as file:
-        read_jason.append(urls)
+        read_jason += list(urls)
         json.dump(read_jason, file, indent=2)
 
 
@@ -47,7 +47,7 @@ async def get_urls(text: T_HTML_TEXT, crawling_depth: int) -> T_URLS:
     return urls
 
 
-async def get_some_links(url: T_URL, max_number_of_links: int, crawling_depth: int) -> T_URLS:
+async def get_some_links(url: T_URL, max_number_of_links: int, crawling_depth: int) -> list:
     new_urls_as_list = [url]
     index_error_list = []
     index = -1
