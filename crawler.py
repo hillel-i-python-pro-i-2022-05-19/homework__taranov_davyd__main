@@ -13,7 +13,7 @@ import bs4
 from init_logging import init_logging
 from settings import path, url
 
-T_URL: TypeAlias = str or list
+T_URL: TypeAlias = str
 T_URLS: TypeAlias = list[T_URL]
 T_HTML_TEXT: TypeAlias = str
 
@@ -47,50 +47,59 @@ async def get_urls(text: T_HTML_TEXT, crawling_depth: int) -> T_URLS:
     return urls
 
 
-async def get_some_links(urls: T_URL, max_number_of_links: int, crawling_depth: int, ):
-    new_urls = []
-    if type(urls) == str:
-        new_urls.append(urls)
-    else:
-        new_urls = urls
-    logging.info(f'start {len(new_urls)}')
+async def get_some_links(url: T_URL, max_number_of_links: int, crawling_depth: int) -> T_URLS:
+    new_urls_as_list = [url]
+    index_error_list = []
+    index = -1
+    logging.info(f'start {len(new_urls_as_list)}')
     while True:
-        for index, _ in enumerate(new_urls):
-            if index == max_number_of_links:
+        index += 1
+        if len(new_urls_as_list) >= max_number_of_links:
+            break
+        try:
+            new_text = await get_text_from_url(new_urls_as_list[index])
+        except IndexError:
+            index_error = "Недостаточно глубины:("
+            index_error_list.append(index_error)
+            print(index_error)
+            index += -1
+            if len(index_error_list) > 5:
+                print('ооо, нет, Мы зациклились... :*(')
                 break
-            new_text = await get_text_from_url(_)
-            with contextlib.suppress(TypeError):
-                new_urls += await get_urls(new_text, crawling_depth)
-        result = new_urls[:max_number_of_links]
-        logging.info(f'end {len(result)}')
-        return result
+            continue
+        with contextlib.suppress(TypeError):
+            new_urls_from_one_ulr = await get_urls(new_text, crawling_depth)
+            for _ in new_urls_from_one_ulr:
+                if _ not in new_urls_as_list:
+                    new_urls_as_list.append(_)
+    result = new_urls_as_list[:max_number_of_links]
+    logging.info(f'end {len(result)}')
+    return result
 
 
-async def main(first_arg_for_first_function, second_arg_for_first_function,
-               first_arg_for_second_function, second_arg_for_second_function):
+async def main(first_arg, second_arg):
     json_links_file_list = _read_json_links_file(path)
     tasks = [
-        get_some_links(urls=url, max_number_of_links=first_arg_for_first_function,
-                       crawling_depth=second_arg_for_first_function),
-        get_some_links(urls=url, max_number_of_links=first_arg_for_second_function,
-                       crawling_depth=second_arg_for_second_function)
+        get_some_links(url=url,
+                       max_number_of_links=first_arg,
+                       crawling_depth=second_arg)
     ]
     result = await asyncio.gather(*tasks)
-    _write_json_links_file(path=path, urls=result[0], read_jason=json_links_file_list)
+    _write_json_links_file(path=path,
+                           urls=result[0],
+                           read_jason=json_links_file_list)
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument("action")
-parser.add_argument("first_arg_for_first_function", nargs='?', default=0)
-parser.add_argument("second_arg_for_first_function", nargs='?', default=0)
-parser.add_argument("first_arg_for_second_function", nargs='?', default=0)
-parser.add_argument("second_arg_for_second_function", nargs='?', default=0)
+parser.add_argument("first_arg", nargs='?', default=0)
+parser.add_argument("second_arg", nargs='?', default=0)
 args = parser.parse_args()
 
 try:
     if args.action == "GET_LINKS":
         init_logging()
-        asyncio.run(main(int(args.first_arg_for_first_function), int(args.second_arg_for_first_function),
-                         int(args.first_arg_for_second_function), int(args.second_arg_for_second_function)))
+        asyncio.run(main(int(args.first_arg),
+                         int(args.second_arg)))
 except ValueError:
-    print('Something went wrong :(')
+    print('Что-то пошло не так :(')
