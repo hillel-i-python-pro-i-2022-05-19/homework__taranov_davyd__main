@@ -18,4 +18,8 @@ fuzz_generator (how it works):
     With each character a new word is added to the "words_list".
     Give out the list "words_list", trimming by the number of necessary words.
 
+
+    In short:
     
+    Create from a word from the alphabet -> if not enough, copy what you have and how much you need
+    and from this create more words until there is enough.
