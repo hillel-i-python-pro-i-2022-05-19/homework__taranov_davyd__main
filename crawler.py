@@ -11,7 +11,7 @@ import bs4
 from init_logging import init_logging
 from settings import path_for_links, url
 
-T_URL: TypeAlias = str
+T_URL: TypeAlias = str or list
 T_URLS: TypeAlias = list[T_URL]
 T_HTML_TEXT: TypeAlias = str
 
@@ -44,7 +44,7 @@ async def get_urls(text: T_HTML_TEXT, crawling_depth: int) -> T_URLS:
 
 
 async def get_some_links(url: T_URL, max_number_of_links: int, crawling_depth: int) -> list:
-    new_urls_as_list = [url]
+    new_urls_as_list = [url] if type(url) == str else list(url)
     index_error_list = []
     index = -1
     logging.info(f'start {len(new_urls_as_list)}')
