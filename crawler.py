@@ -9,7 +9,7 @@ import aiohttp
 import bs4
 
 from init_logging import init_logging
-from settings import path, url
+from settings import path_for_links, url
 
 T_URL: TypeAlias = str
 T_URLS: TypeAlias = list[T_URL]
@@ -22,10 +22,10 @@ def _read_json_links_file(path: str) -> Union[List, Dict]:
     return data
 
 
-def _write_json_links_file(path: str, urls: list, read_jason: list or dict):
+def _write_json_links_file(path: str, urls: list, read_json: list or dict):
     with open(path, "w") as file:
-        read_jason += list(urls)
-        json.dump(read_jason, file, indent=2)
+        read_json += list(urls)
+        json.dump(read_json, file, indent=2)
 
 
 async def get_text_from_url(url) -> T_HTML_TEXT:
@@ -74,16 +74,16 @@ async def get_some_links(url: T_URL, max_number_of_links: int, crawling_depth: i
 
 
 async def main(first_arg, second_arg):
-    json_links_file_list = _read_json_links_file(path)
+    json_links_file_list = _read_json_links_file(path_for_links)
     tasks = [
         get_some_links(url=url,
                        max_number_of_links=first_arg,
                        crawling_depth=second_arg)
     ]
     result = await asyncio.gather(*tasks)
-    _write_json_links_file(path=path,
+    _write_json_links_file(path=path_for_links,
                            urls=result[0],
-                           read_jason=json_links_file_list)
+                           read_json=json_links_file_list)
 
 
 parser = argparse.ArgumentParser()
