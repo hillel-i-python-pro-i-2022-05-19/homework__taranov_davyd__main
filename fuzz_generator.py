@@ -11,12 +11,6 @@ def _write_json_words_file(path: str, words: list):
     with open(path, "w") as file:
         json.dump(words, file, indent=2)
 
-        # aDict = {"a": 54, "b": 87}
-        # jsonString = json.dumps(aDict)
-        # jsonFile = open("data.json", "w")
-        # jsonFile.write(jsonString)
-        # jsonFile.close()
-
 
 class FuzzGenerator(threading.Thread):
     def __init__(self, word_count, word_length):
