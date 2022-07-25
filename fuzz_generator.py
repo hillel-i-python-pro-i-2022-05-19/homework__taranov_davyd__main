@@ -2,22 +2,20 @@ import argparse
 import json
 import logging
 import threading
-from typing import List, Dict, Union
 
 from init_logging import init_logging
-from settings import ALPHABET, path_for_words
+from settings import ALPHABET
 
 
-def _read_json_words_file(path: str) -> Union[List, Dict]:
-    with open(path, 'r') as file:
-        data = json.load(file)
-    return data
-
-
-def _write_json_words_file(path: str, words: list, read_json: list or dict):
+def _write_json_words_file(path: str, words: list):
     with open(path, "w") as file:
-        read_json += list(words)
-        json.dump(read_json, file, indent=2)
+        json.dump(words, file, indent=2)
+
+        # aDict = {"a": 54, "b": 87}
+        # jsonString = json.dumps(aDict)
+        # jsonFile = open("data.json", "w")
+        # jsonFile.write(jsonString)
+        # jsonFile.close()
 
 
 class FuzzGenerator(threading.Thread):
@@ -74,8 +72,7 @@ def main(word_count, word_length, threads_count):
     for _ in range(int(threads_count)):
         fuzz_generator = FuzzGenerator(word_count, word_length)
         words_list = fuzz_generator.world_generator()
-        json_words_file_as_list = _read_json_words_file(path=path_for_words)
-        _write_json_words_file(path=path_for_words, words=words_list, read_json=json_words_file_as_list)
+        _write_json_words_file(path='words.json', words=words_list)
         fuzz_generator.start()
 
 

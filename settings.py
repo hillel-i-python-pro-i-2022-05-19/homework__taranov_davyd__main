@@ -7,7 +7,7 @@ url: Final[str or list[str]] = ['https://www.ted.com/talks/jay_walker_the_world_
                                 'https://python-scripts.com/threading']
 
 ALPHABET: Final[str] = ''.join([
-    string.ascii_lowercase,
-    string.ascii_uppercase,
+    # string.ascii_lowercase,
+    # string.ascii_uppercase,
     string.digits,
 ])
