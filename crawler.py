@@ -3,7 +3,7 @@ import logging
 import time
 
 from settings import T_URL
-from tools.tools import _added_urls_in_json_file, get_text_from_url, get_urls, creat_file_name
+from tools.tools import _added_urls_in_json_file, get_text_from_url, get_urls_as_list, creat_file_name
 
 
 class Crawler:
@@ -23,7 +23,7 @@ class Crawler:
                 break
             new_text = await get_text_from_url(new_urls_as_list[index])
             with contextlib.suppress(TypeError):
-                new_urls_from_one_ulr = get_urls(new_text)
+                new_urls_from_one_ulr = get_urls_as_list(new_text)
                 for new_url in new_urls_from_one_ulr:
                     if len(new_urls_as_list) == self.max_number_of_urls:
                         while_bool = False
