@@ -33,7 +33,7 @@ def get_urls(text: T_HTML_TEXT) -> T_URLS:
     soup = bs4.BeautifulSoup(markup=text, features='html.parser')
     urls = [url_element.get('href')
             for url_element in soup.find_all('a')
-            if 'https' in url_element.get('href')[:5]]
+            if 'https' or 'http' in url_element.get('href')[:5]]
     return urls
 
 
