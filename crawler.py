@@ -1,54 +1,40 @@
-import asyncio
 import contextlib
 import logging
+import time
 
-from settings import path_input_links
-from tools.init_logging import init_logging
-from tools.tools import _read_txt_file, _write_json_links_file, get_text_from_url, get_urls, creat_file_name, args
+from settings import T_URL
+from tools.tools import _added_urls_in_json_file, get_text_from_url, get_urls, creat_file_name
 
 
-async def get_some_links(max_number_of_links: int, crawling_depth: int):
-    input_links = _read_txt_file(path_input_links)
-    given_urls_as_list = input_links.split(",") if ',' in input_links else [input_links]
-    for url_from_list in given_urls_as_list:
-        new_urls_as_list = [url_from_list]
-        index_error_list = []
+class Crawler:
+    def __init__(self, input_url_as_str: T_URL, max_number_of_urls: int, crawling_depth: int) -> None:
+        self.input_url_as_str = input_url_as_str
+        self.max_number_of_urls = max_number_of_urls
+        self.crawling_depth = crawling_depth
+
+    async def get_unique_urls(self) -> None:
+        new_urls_as_list = [self.input_url_as_str]
         index = -1
-        logging.info(f'start {len(new_urls_as_list)}')
-        while True:
+        logging.info(f'start, urls={len(new_urls_as_list)}')
+        while_bool = True
+        while while_bool:
             index += 1
-            if crawling_depth == index or len(new_urls_as_list) >= max_number_of_links:
+            if self.crawling_depth == index:
                 break
-            try:
-                new_text = await get_text_from_url(new_urls_as_list[index])
-            except IndexError:
-                index_error = "Недостаточно глубины:("
-                index_error_list.append(index_error)
-                print(index_error)
-                index += -1
-                if len(index_error_list) > 5:
-                    print('ооо, нет, Мы зациклились... :*(')
-                    break
-                continue
+            new_text = await get_text_from_url(new_urls_as_list[index])
             with contextlib.suppress(TypeError):
                 new_urls_from_one_ulr = get_urls(new_text)
                 for new_url in new_urls_from_one_ulr:
+                    if len(new_urls_as_list) == self.max_number_of_urls:
+                        while_bool = False
+                        break
                     if new_url not in new_urls_as_list:
                         new_urls_as_list.append(new_url)
-        result = new_urls_as_list[:max_number_of_links]
-        logging.info(f'end {len(result)}')
-        file_names = creat_file_name(url_from_list, len(result))
-        _write_json_links_file(path=f'results/{file_names}', words=result)
-
-
-async def main():
-    arg = args()
-    init_logging()
-    tasks = [
-        get_some_links(max_number_of_links=int(arg.max_number_of_links), crawling_depth=int(arg.crawling_depth))
-    ]
-    await asyncio.gather(*tasks)
-
-
-if __name__ == '__main__':
-    asyncio.run(main())
+                        logging.info(f'New url: {new_url}')
+                        time.sleep(0.03)
+        logging.info(f'end, urls={len(new_urls_as_list)}')
+        file_name = creat_file_name(url=self.input_url_as_str,
+                                    len_urls=len(new_urls_as_list),
+                                    crawling_depth=self.crawling_depth)
+        logging.info(f'File created: {file_name}')
+        _added_urls_in_json_file(path=f'results/{file_name}', urls=new_urls_as_list)

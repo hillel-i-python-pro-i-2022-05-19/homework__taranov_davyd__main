@@ -1,0 +1,10 @@
+https://www.ted.com/talks/jay_walker_the_world_s_english_mania
+https://python-scripts.com/threading
+https://www.youtube.com
+https://docs.python.org/3/library/multiprocessing.html
+https://docs.python.org/3/library/multiprocessing.html#the-spawn-and-forkserver-start-methods
+https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process.start
+https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process.exitcode
+https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process.join
+https://docs.python.org/3/library/queue.html#queue.Empty
+https://docs.python.org/3/library/exceptions.html#KeyboardInterrupt

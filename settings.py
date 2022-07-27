@@ -1,13 +1,12 @@
-import string
 from typing import Final, TypeAlias
 
-path_input_links: Final[str] = 'input_links.txt'
-T_URL: TypeAlias = str or list
+path_input_urls: Final[str] = 'input_urls.txt'
+
+T_URL: TypeAlias = str
 T_URLS: TypeAlias = list[T_URL]
+
 T_HTML_TEXT: TypeAlias = str
 
-ALPHABET: Final[str] = ''.join([
-    # string.ascii_lowercase,
-    # string.ascii_uppercase,
-    string.digits,
-])
+T_FILE_NAME: TypeAlias = str
+T_TXT_FILE: TypeAlias = str
+T_JSON_FILE: TypeAlias = str
