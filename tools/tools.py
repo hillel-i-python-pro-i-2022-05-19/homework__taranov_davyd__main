@@ -29,7 +29,7 @@ async def get_text_from_url(url: T_URL) -> T_HTML_TEXT:
             return response_text
 
 
-def get_urls(text: T_HTML_TEXT) -> T_URLS:
+def get_urls_as_list(text: T_HTML_TEXT) -> T_URLS:
     soup = bs4.BeautifulSoup(markup=text, features='html.parser')
     urls = [url_element.get('href')
             for url_element in soup.find_all('a')
