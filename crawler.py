@@ -7,7 +7,7 @@ from tools.tools import _added_urls_in_json_file, get_text_from_url, get_urls, c
 
 
 class Crawler:
-    def __init__(self, input_url_as_str: T_URL, max_number_of_urls: int, crawling_depth: int) -> None:
+    def __init__(self, input_url_as_str: T_URL, max_number_of_urls: int, crawling_depth: int):
         self.input_url_as_str = input_url_as_str
         self.max_number_of_urls = max_number_of_urls
         self.crawling_depth = crawling_depth
