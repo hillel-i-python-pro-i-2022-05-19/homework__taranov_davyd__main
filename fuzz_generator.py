@@ -10,7 +10,7 @@ class FuzzGenerator():
         self.words_count = words_count
         self.word_length = word_length
 
-    def world_generator(self) -> None:
+    def worlds_generator(self) -> None:
         # there is a description of the work in README.md
         basic_symbols_of_alphabet_as_list = list(self.alfabet)
         # create a list of words from the characters of the entire alphabet
@@ -50,7 +50,7 @@ class FuzzGenerator():
                         if my_str in words_as_list or len(words_as_list) >= self.words_count:
                             while_bool = False
                             break
-                        logging.info(f'word: "{my_str}" add to file')
+                        # logging.info(f'word: "{my_str}" add to file')
                         words_as_list.append(my_str)
         logging.info(f'end - words: {len(words_as_list)}')
         file_name = creat_file_name(self.alfabet, len(words_as_list), self.word_length)

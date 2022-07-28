@@ -11,7 +11,7 @@ def run(*args):
     args = args[0]
     logging.info(args)
     fuzz_generator = FuzzGenerator(*args)
-    fuzz_generator.world_generator()
+    fuzz_generator.worlds_generator()
 
 
 if __name__ == '__main__':
