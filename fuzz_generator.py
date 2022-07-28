@@ -6,7 +6,7 @@ from settings import ALPHABET
 
 
 def _write_json_words_file(words: list):
-    with open('abcd.json', "w") as file:
+    with open('results/abcd.json', "w") as file:
         json.dump(words, file, indent=2)
 
 
