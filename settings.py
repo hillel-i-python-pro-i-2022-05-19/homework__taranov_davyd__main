@@ -1,10 +1,5 @@
-import string
 from typing import Final
 
-path_for_links: Final[str] = 'found_links.json'
+# T_ALFABETS: T
 
-ALPHABET: Final[str] = ''.join([
-    string.ascii_lowercase,
-    string.ascii_uppercase,
-    string.digits,
-])
+path_for_alfabets: Final[str] = 'input_alfabets.txt'
