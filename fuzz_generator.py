@@ -3,8 +3,8 @@ import json
 import logging
 import threading
 
-from init_logging import init_logging
 from settings import ALPHABET
+from tools.init_logging import init_logging
 
 
 def _write_json_words_file(path: str, words: list):
