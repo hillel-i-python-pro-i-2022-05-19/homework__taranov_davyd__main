@@ -1,18 +1,14 @@
-import json
 import logging
 import threading
 
 from settings import ALPHABET
-
-
-def _write_json_words_file(words: list):
-    with open('results/abcd.json', "w") as file:
-        json.dump(words, file, indent=2)
+from tools.tools import _write_json_words_file, creat_file_name
 
 
 class FuzzGenerator(threading.Thread):
-    def __init__(self, word_count, word_length):
+    def __init__(self, alfabet, word_count, word_length):
         threading.Thread.__init__(self)
+        self.alfabet = alfabet
         self.word_count = word_count
         self.word_length = word_length
 
@@ -62,4 +58,5 @@ class FuzzGenerator(threading.Thread):
                 break
         words_list = words_list[:self.word_count]
         logging.info(f'end {len(words_list)}')
-        _write_json_words_file(words=words_list)
+        file_name = creat_file_name(self.alfabet, self.word_count, self.word_length)
+        _write_json_words_file(file_name=file_name, words=words_list)
