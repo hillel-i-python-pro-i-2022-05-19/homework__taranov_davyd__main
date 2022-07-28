@@ -1,10 +1,8 @@
-import argparse
 import json
 import logging
 import threading
 
 from settings import ALPHABET
-from tools.init_logging import init_logging
 
 
 def _write_json_words_file(path: str, words: list):
@@ -60,26 +58,3 @@ class FuzzGenerator(threading.Thread):
         words_list = words_list[:self.word_count]
         logging.info(f'end {len(words_list)}')
         return words_list
-
-
-def main(word_count, word_length, threads_count):
-    for _ in range(int(threads_count)):
-        fuzz_generator = FuzzGenerator(word_count, word_length)
-        words_list = fuzz_generator.world_generator()
-        _write_json_words_file(path='words.json', words=words_list)
-        fuzz_generator.start()
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument("action")
-parser.add_argument("word_count", nargs='?', default=0)
-parser.add_argument("word_length", nargs='?', default=0)
-parser.add_argument("threads_count", nargs='?', default=0)
-args = parser.parse_args()
-
-try:
-    if args.action == "GET_WORDS":
-        init_logging()
-        main(int(args.word_count), int(args.word_length), int(args.threads_count))
-except ValueError:
-    print('Что-то пошло не так :(')
