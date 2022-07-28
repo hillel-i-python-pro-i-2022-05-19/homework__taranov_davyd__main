@@ -23,19 +23,20 @@ class FuzzGenerator(threading.Thread):
         words_list = []
         logging.info(f'start {len(words_list)}')
         increase_of_alphabet = -1
-        for symbol in basic_symbols_of_alphabet_as_list:
+        while_bool = True
+        for basic_symbol in basic_symbols_of_alphabet_as_list:
             # fill words with the first character from the alphabet according to the length of the word
-            if len(symbol) < self.word_length:
-                for ___ in range(self.word_length - len(symbol)):
-                    symbol += ALPHABET[0]
+            if len(basic_symbol) < self.word_length:
+                for _ in range(self.word_length - len(basic_symbol)):
+                    basic_symbol += ALPHABET[0]
             elif self.word_length == 1:
-                symbol = symbol
-            words_list.append(symbol[::-1])
+                basic_symbol = basic_symbol
+            words_list.append(basic_symbol[::-1])
         if self.word_count <= len(words_list):
             words_list = words_list[:self.word_count]
             logging.info(f'end {len(words_list)}')
             _write_json_words_file(words=words_list)
-        while True:
+        while while_bool:
             increase_of_alphabet += 1
             # depending on the number of words, increase the alphabet
             if len(ALPHABET) == len(words_list):
@@ -43,14 +44,18 @@ class FuzzGenerator(threading.Thread):
             else:
                 copy_words_list = words_list.copy()[(len(ALPHABET)) * increase_of_alphabet:]
             # copy the list according to the length we need
-            for index, __ in enumerate(copy_words_list):
+            for index, copy_word in enumerate(copy_words_list):
                 # create a new word in a double loop and add it to the list "words_list"
                 if index == len(ALPHABET):
                     break
-                if __ != ALPHABET[0] * self.word_length:
-                    for _ in ALPHABET:
-                        my_str = (__ + str(_))
+                if copy_word != ALPHABET[0] * self.word_length:
+                    for symbol in ALPHABET:
+                        my_str = (copy_word + str(symbol))
                         my_str = my_str[len(my_str) - self.word_length:]
+                        if my_str in words_list:
+                            while_bool = False
+                            break
+                        logging.info(f'word: {my_str} - add')
                         words_list.append(my_str)
             if len(words_list) >= self.word_count:
                 # stop everything if we have created the required number of words

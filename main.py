@@ -5,10 +5,9 @@ from tools.init_logging import init_logging
 from tools.tools import args
 
 
-def run(*args):
-    args = args[0]
-    logging.info(args)
-    fuzz_generator = FuzzGenerator(*args)
+def run(word_count, word_length):
+    logging.info(word_count, word_length)
+    fuzz_generator = FuzzGenerator(word_count, word_length)
     fuzz_generator.world_generator()
     fuzz_generator.start()
 
