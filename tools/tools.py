@@ -1,23 +1,23 @@
 import argparse
 import json
 
+from settings import T_ALFABETS, T_FILE_NAME, T_TXT_FILE_NAME, T_JSON_FILE_NAME, T_ALFABET
 
-def _get_alfabets_from_txt_file_as_list(path) -> T_ALFABETS:
+
+def _get_alfabets_from_txt_file_as_list(path: T_TXT_FILE_NAME) -> T_ALFABETS:
     with open(path, "r", ) as file:
         data = ''
         for _ in file.readlines():
             data += _.split('\n')[0] + ','
     data = data[:-1]
-    input_alfabets_as_list = data.split(",") if ',' in data else [data]
-    return input_alfabets_as_list
+    return data.split(",") if ',' in data else [data]
 
 
-def creat_file_name(alfabet, words_count, len_word: int):
-    file_name = f'''{alfabet}(count={words_count})(len={len_word}).json'''
-    return file_name
+def creat_file_name(alfabet: T_ALFABET, words_count: int, len_word: int) -> T_FILE_NAME:
+    return f'''{alfabet}(count={words_count})(len={len_word}).json'''
 
 
-def _write_json_words_file(file_name, words: list):
+def _write_json_words_file(file_name: T_JSON_FILE_NAME, words: list) -> None:
     with open(f'results/{file_name}', "w") as file:
         json.dump(words, file, indent=2)
 
