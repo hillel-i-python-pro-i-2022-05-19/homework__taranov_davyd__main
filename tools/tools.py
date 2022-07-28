@@ -3,7 +3,7 @@ import argparse
 
 def args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--wc"
+    parser.add_argument("--wc",
                         "-word_count",
                         type=int,
                         default=100)

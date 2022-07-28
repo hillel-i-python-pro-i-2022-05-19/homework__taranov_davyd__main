@@ -5,8 +5,8 @@ import threading
 from settings import ALPHABET
 
 
-def _write_json_words_file(path: str, words: list):
-    with open(path, "w") as file:
+def _write_json_words_file(words: list):
+    with open('abcd.json', "w") as file:
         json.dump(words, file, indent=2)
 
 
@@ -16,7 +16,7 @@ class FuzzGenerator(threading.Thread):
         self.word_count = word_count
         self.word_length = word_length
 
-    def world_generator(self) -> list:
+    def world_generator(self) -> None:
         # there is a description of the work in README.md
         basic_symbols_of_alphabet_as_list = list(ALPHABET)
         # create a list of words from the characters of the entire alphabet
@@ -34,7 +34,7 @@ class FuzzGenerator(threading.Thread):
         if self.word_count <= len(words_list):
             words_list = words_list[:self.word_count]
             logging.info(f'end {len(words_list)}')
-            return words_list
+            _write_json_words_file(words=words_list)
         while True:
             increase_of_alphabet += 1
             # depending on the number of words, increase the alphabet
@@ -57,4 +57,4 @@ class FuzzGenerator(threading.Thread):
                 break
         words_list = words_list[:self.word_count]
         logging.info(f'end {len(words_list)}')
-        return words_list
+        _write_json_words_file(words=words_list)
