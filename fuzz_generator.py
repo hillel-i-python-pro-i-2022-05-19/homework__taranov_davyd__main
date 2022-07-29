@@ -45,13 +45,13 @@ class FuzzGenerator():
                 # create a new word in a double loop and add it to the list "words_list"
                 if copy_word != self.alfabet[0] * self.word_length:
                     for symbol in self.alfabet:
-                        my_str = (copy_word + str(symbol))
-                        my_str = my_str[len(my_str) - self.word_length:]
-                        if my_str in words_as_list or len(words_as_list) >= self.words_count:
+                        final_word = (copy_word + str(symbol))
+                        final_word = final_word[len(final_word) - self.word_length:]
+                        if final_word in words_as_list or len(words_as_list) >= self.words_count:
                             while_bool = False
                             break
                         # logging.info(f'word: "{my_str}" add to file')
-                        words_as_list.append(my_str)
+                        words_as_list.append(final_word)
         logging.info(f'end - words: {len(words_as_list)}')
         file_name = creat_file_name(self.alfabet, len(words_as_list), self.word_length)
         _write_json_words_file(file_name=file_name, words=words_as_list)

@@ -13,8 +13,8 @@ def _get_alfabets_from_txt_file_as_list(path: T_TXT_FILE_NAME) -> T_ALFABETS:
     return data.split(",") if ',' in data else [data]
 
 
-def creat_file_name(alfabet: T_ALFABET, words_count: int, len_word: int) -> T_FILE_NAME:
-    return f'''{alfabet}(count={words_count})(len={len_word}).json'''
+def creat_file_name(alfabet: T_ALFABET, words_count: int, word_len: int) -> T_FILE_NAME:
+    return f'''{alfabet}(count={words_count})(word_len={word_len}).json'''
 
 
 def _write_json_words_file(file_name: T_JSON_FILE_NAME, words: list) -> None:
