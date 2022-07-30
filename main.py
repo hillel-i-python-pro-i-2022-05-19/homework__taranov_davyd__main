@@ -4,7 +4,7 @@ import logging
 from fuzz_generator import FuzzGenerator
 from settings import path_for_alfabets
 from tools.init_logging import init_logging
-from tools.tools import args, _get_alfabets_from_txt_file_as_list
+from tools.utils import args, _get_alfabets_from_txt_file_as_list
 
 
 def run(*args):

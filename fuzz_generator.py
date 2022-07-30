@@ -1,7 +1,7 @@
 import logging
 
 from settings import T_ALFABET
-from tools.tools import _write_json_words_file, creat_file_name
+from tools.utils import _write_json_words_file, creat_file_name
 
 
 class FuzzGenerator():
