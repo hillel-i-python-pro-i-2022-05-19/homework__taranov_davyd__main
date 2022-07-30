@@ -50,7 +50,7 @@ class FuzzGenerator():
                         if final_word in words_as_list or len(words_as_list) >= self.words_count:
                             while_bool = False
                             break
-                        # logging.info(f'word: "{my_str}" add to file')
+                        # logging.info(f'word: "{final_word}" add to file')
                         words_as_list.append(final_word)
         logging.info(f'end - words: {len(words_as_list)}')
         file_name = creat_file_name(self.alfabet, len(words_as_list), self.word_length)
