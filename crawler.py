@@ -1,6 +1,6 @@
+import asyncio
 import contextlib
 import logging
-import time
 
 from settings import T_URL
 from tools.tools import _added_urls_in_json_file, get_text_from_url, get_urls_as_list, creat_file_name
@@ -31,7 +31,7 @@ class Crawler:
                     if new_url not in new_urls_as_list:
                         new_urls_as_list.append(new_url)
                         logging.info(f'New url: {new_url}')
-                        time.sleep(0.03)
+                        await asyncio.sleep(0.03)
         logging.info(f'end, urls={len(new_urls_as_list)}')
         file_name = creat_file_name(url=self.input_url_as_str,
                                     len_urls=len(new_urls_as_list),
