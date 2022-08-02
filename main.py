@@ -13,6 +13,7 @@ def run(*args):
     fuzz_generator = FuzzGenerator(*args)
     fuzz_generator.words_generator()
 
+
 if __name__ == '__main__':
     arg = args()
     init_logging()
