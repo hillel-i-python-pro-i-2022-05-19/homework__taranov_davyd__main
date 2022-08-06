@@ -11,7 +11,6 @@ class FuzzGenerator:
         self.words_count = words_count
         self.word_length = word_length
         self.words_as_list = []
-        self.copy_words_list = self.words_as_list
 
     def words_generator(self) -> None:
         # there is a description of the work in README.md
@@ -40,7 +39,7 @@ class FuzzGenerator:
                         break_bool = False
                         break
                     self.words_as_list.append(final_word)
-                    # logging.info(f'word: "{final_word}" add to file')
+                    logging.info(f'word: "{final_word}" add to file')
 
         logging.info(f'end - words: {len(self.words_as_list)}')
         file_name = creat_file_name(self.alphabet, len(self.words_as_list), self.word_length)
