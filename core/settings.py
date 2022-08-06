@@ -6,4 +6,5 @@ T_FILE_NAME: TypeAlias = str
 T_TXT_FILE_NAME: TypeAlias = str
 T_JSON_FILE_NAME: TypeAlias = str
 
-path_for_alphabets: Final[str] = 'app/input_alphabets.txt'
+path_for_alphabets: Final[str] = '../app/input_alphabets.txt'
+path_for_alphabetss: Final[str] = '../app/input_alphabets.txt'
