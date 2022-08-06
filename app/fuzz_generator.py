@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from core.settings import T_ALPHABET
 from tools.utils import _write_json_words_file, creat_file_name
@@ -10,48 +11,38 @@ class FuzzGenerator:
         self.words_count = words_count
         self.word_length = word_length
         self.words_as_list = []
+        self.copy_words_list = self.words_as_list
 
     def words_generator(self) -> None:
         # there is a description of the work in README.md
+        start_time = datetime.now()
         basic_symbols_of_alphabet_as_list = list(self.alphabet)
-        # create a list of words from the characters of the entire alphabet
         logging.info(f'start - words: {len(self.words_as_list)}')
-        increase_of_alphabet = -1
-        while_bool = True
         for basic_symbol in basic_symbols_of_alphabet_as_list:
-            # fill words with the first character from the alphabet according to the length of the word
             if len(self.words_as_list) == self.words_count:
                 break
             if len(basic_symbol) < self.word_length:
-                for _ in range(self.word_length - len(basic_symbol)):
+                for _ in range(self.word_length - 1):
                     basic_symbol += self.alphabet[0]
             elif self.word_length == 1:
                 basic_symbol = basic_symbol
             self.words_as_list.append(basic_symbol[::-1])
-        if self.words_count <= len(self.words_as_list):
-            words_as_list = self.words_as_list[:self.words_count]
-            logging.info(f'end - words: {len(words_as_list)}')
-            file_name = creat_file_name(self.alphabet, len(words_as_list), self.word_length)
-            _write_json_words_file(file_name=file_name, words=words_as_list)
-        while while_bool:
-            increase_of_alphabet += 1
-            # depending on the number of words, increase the alphabet
-            if len(self.alphabet) == len(self.words_as_list):
-                copy_words_list = self.words_as_list.copy()
-            else:
-                copy_words_list = self.words_as_list.copy()[(len(self.alphabet)) * increase_of_alphabet:]
-            # copy the list of words of the length we need
-            for copy_word in copy_words_list:
-                # create a new word in a double loop and add it to the list "words_list"
-                if copy_word != self.alphabet[0] * self.word_length:
-                    for symbol in self.alphabet:
-                        final_word = (copy_word + str(symbol))
-                        final_word = final_word[len(final_word) - self.word_length:]
-                        if final_word in self.words_as_list or len(self.words_as_list) >= self.words_count:
-                            while_bool = False
-                            break
-                        # logging.info(f'word: "{final_word}" add to file')
-                        self.words_as_list.append(final_word)
+
+        break_bool = True
+        for copy_word in self.words_as_list:
+            if break_bool == False:
+                break
+            if copy_word != self.alphabet[0] * self.word_length:
+                for symbol in self.alphabet:
+                    final_word = ''.join([copy_word, str(symbol)])
+                    final_word = final_word[len(final_word) - self.word_length:]
+                    if final_word in self.words_as_list or len(self.words_as_list) == self.words_count:
+                        break_bool = False
+                        break
+                    self.words_as_list.append(final_word)
+                    # logging.info(f'word: "{final_word}" add to file')
+
         logging.info(f'end - words: {len(self.words_as_list)}')
         file_name = creat_file_name(self.alphabet, len(self.words_as_list), self.word_length)
         _write_json_words_file(file_name=file_name, words=self.words_as_list)
+        logging.info(datetime.now() - start_time)
