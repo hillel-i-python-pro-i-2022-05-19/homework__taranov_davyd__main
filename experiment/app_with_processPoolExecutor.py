@@ -1,11 +1,11 @@
 import concurrent.futures
 import logging
+import multiprocessing
 from datetime import datetime
 
-from core.settings import T_ALPHABET
-from core.settings import path_for_alphabetss
-from tools.init_logging import init_logging
-from tools.utils import _write_json_words_file, creat_file_name, _get_alphabets_from_txt_file_as_list
+from core import *
+from tools import init_logging, _get_alphabets_from_txt_file_as_list, creat_file_name, \
+    _write_json_words_file_for_experiment
 
 words_as_list = []
 
@@ -39,41 +39,62 @@ class FuzzGenerator:
             for symbol in self.alphabet:
                 final_word = ''.join([copy_word, str(symbol)])
                 final_word = final_word[len(final_word) - self.word_length:]
-                if final_word in words_as_list or len(words_as_list) == self.words_count:
+                if final_word in words_as_list:
                     while_bool = False
-                    break
-                logging.info(f'word: "{final_word}" add to file')
+                    return list_in_process, while_bool
                 list_in_process.append(final_word)
         return list_in_process, while_bool
-
-    #
-    # words_as_list.append(final_word)
 
     def end_of_function(self) -> None:
         logging.info(f'end - words: {len(words_as_list)}')
         file_name = creat_file_name(self.alphabet, len(words_as_list), self.word_length)
-        _write_json_words_file(file_name=file_name, words=words_as_list)
+        _write_json_words_file_for_experiment(file_name=file_name, words=words_as_list)
         logging.info(datetime.now() - self.start_time)
 
 
-def main(*args):
+def run(*args):
     args = args[0]
     logging.info(args)
     fuzz_generator = FuzzGenerator(*args)
     words_as_list = fuzz_generator.create_the_first_words_of_the_alphabet()
     while_bool = True
+    index_3_a, index_2_a, index_1_a = -2, -2, -1
+    index_3_b, index_2_b, index_1_b = -1, -1, 0
+    if args[1] == 1:
+        words_as_list = words_as_list[:1]
+        while_bool = False
     while while_bool:
+        index_1_a += 1
+        index_1_b += 1
+        if len(args[0]) == len(words_as_list):
+            copy_words_list = words_as_list.copy()
+        elif len(words_as_list) >= 1000:
+            index_3_a += 1
+            index_3_b += 1
+            copy_words_list = words_as_list.copy()[1000 * index_3_a: 1000 * index_3_b]
+        elif len(words_as_list) > 100:
+            index_2_a += 1
+            index_2_b += 1
+            copy_words_list = words_as_list.copy()[100 * index_2_a: 100 * index_2_b]
+        else:
+            copy_words_list = words_as_list.copy()[10 * index_1_a: 10 * index_1_b]
         with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executors:
             for list_in_process, while_bool_in_process in executors.map(fuzz_generator.create_the_rest_of_the_words,
-                                                                        list(words_as_list)):
+                                                                        list(copy_words_list)):
                 while_bool = while_bool_in_process
                 for word_in_process in list_in_process:
+                    if len(words_as_list) == args[1]:
+                        while_bool = False
+                        break
                     words_as_list.append(word_in_process)
+                    logging.info(f'word: "{word_in_process}" add to file')
     fuzz_generator.end_of_function()
 
 
 if __name__ == '__main__':
+    words_count = 100000
+    word_length = 5
     init_logging()
-    alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabetss)
-    with concurrent.futures.ProcessPoolExecutor(max_workers=len(alphabets_as_list)) as executor:
-        executor.map(main, [(alphabet, 1000, 5) for alphabet in alphabets_as_list])
+    alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabets_for_experiment)
+    with concurrent.futures.ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 4) as executor:
+        executor.map(run, [(alphabet, words_count, word_length) for alphabet in alphabets_as_list])
