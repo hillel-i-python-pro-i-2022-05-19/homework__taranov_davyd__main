@@ -17,8 +17,13 @@ def creat_file_name(alphabet: T_ALPHABET, words_count: int, word_len: int) -> T_
     return f'''{alphabet}(count={words_count})(word_len={word_len}).json'''
 
 
-def _write_json_words_file(file_name: T_JSON_FILE_NAME, words: list) -> None:
+def _write_json_words_file_for_app(file_name: T_JSON_FILE_NAME, words: list) -> None:
     with open(f'results/{file_name}', "w") as file:
+        json.dump(words, file, indent=2)
+
+
+def _write_json_words_file_for_experiment(file_name: T_JSON_FILE_NAME, words: list) -> None:
+    with open(f'../results/{file_name}', "w") as file:
         json.dump(words, file, indent=2)
 
 

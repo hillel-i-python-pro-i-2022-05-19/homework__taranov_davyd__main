@@ -1,8 +1,8 @@
 import concurrent.futures
 import logging
 
-from app.fuzz_generator import FuzzGenerator
-from core.settings import path_for_alphabets
+from app.app import FuzzGenerator
+from core.settings import path_for_alphabets_for_app
 from tools.init_logging import init_logging
 from tools.utils import args, _get_alphabets_from_txt_file_as_list
 
@@ -17,6 +17,6 @@ def run(*args):
 if __name__ == '__main__':
     arg = args()
     init_logging()
-    alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabets)
+    alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabets_for_app)
     with concurrent.futures.ProcessPoolExecutor(max_workers=len(alphabets_as_list)) as executor:
         executor.map(run, [(alphabet, arg.words_count, arg.word_length) for alphabet in alphabets_as_list])
