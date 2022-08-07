@@ -78,6 +78,7 @@ def run(*args):
             copy_words_list = words_as_list.copy()[100 * index_2_a: 100 * index_2_b]
         else:
             copy_words_list = words_as_list.copy()[10 * index_1_a: 10 * index_1_b]
+        #  here I tried to somehow stop the process pool in the place I needed and at the same time speed it up
         with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executors:
             for list_in_process, while_bool_in_process in executors.map(fuzz_generator.create_the_rest_of_the_words,
                                                                         list(copy_words_list)):
@@ -92,7 +93,7 @@ def run(*args):
 
 
 if __name__ == '__main__':
-    words_count = 100000
+    words_count = 10000
     word_length = 5
     init_logging()
     alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabets_for_experiment)
