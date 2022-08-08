@@ -13,7 +13,7 @@ def _get_alphabets_from_txt_file_as_list(path: T_TXT_FILE_NAME) -> T_ALPHABETS:
     return data.split(",") if ',' in data else [data]
 
 
-def creat_file_name(alphabet: T_ALPHABET, words_count: int, word_len: int) -> T_FILE_NAME:
+def create_file_name(alphabet: T_ALPHABET, words_count: int, word_len: int) -> T_FILE_NAME:
     return f'''{alphabet}(count={words_count})(word_len={word_len}).json'''
 
 

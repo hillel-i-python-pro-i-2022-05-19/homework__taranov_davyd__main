@@ -1,11 +1,10 @@
 import concurrent.futures
 import logging
-import multiprocessing
 from datetime import datetime
 from multiprocessing import Pipe, Process
 
 from core import *
-from tools import _write_json_words_file_for_experiment, creat_file_name, init_logging, \
+from tools import _write_json_words_file_for_experiment, create_file_name, init_logging, \
     _get_alphabets_from_txt_file_as_list
 
 
@@ -47,7 +46,7 @@ class FuzzGenerator:
             self.words_count = len(self.alphabet) ** self.word_length
         break_bool = True
         for copy_word in self.words_as_list:
-            if break_bool != True:
+            if not break_bool:
                 break
             proces = Process(target=self.creat_word, args=(copy_word,))
             proces.start()
@@ -61,7 +60,7 @@ class FuzzGenerator:
 
         logging.info(f'end - words: {len(self.words_as_list)}')
         logging.info(datetime.now() - start_time)
-        file_name = creat_file_name(self.alphabet, len(self.words_as_list), self.word_length)
+        file_name = create_file_name(self.alphabet, len(self.words_as_list), self.word_length)
         _write_json_words_file_for_experiment(file_name=file_name, words=self.words_as_list)
 
 
@@ -77,5 +76,5 @@ if __name__ == '__main__':
     word_length = 5
     init_logging()
     alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabets_for_experiment)
-    with concurrent.futures.ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 4) as executor:
+    with concurrent.futures.ProcessPoolExecutor() as executor:
         executor.map(main, [(alphabet, words_count, word_length) for alphabet in alphabets_as_list])

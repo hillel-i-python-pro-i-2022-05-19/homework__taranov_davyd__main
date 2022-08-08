@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 
 from core.settings import T_ALPHABET
-from tools.utils import _write_json_words_file_for_app, creat_file_name
+from tools.utils import _write_json_words_file_for_app, create_file_name
 
 
 class FuzzGenerator:
@@ -43,5 +43,5 @@ class FuzzGenerator:
 
         logging.info(f'end - words: {len(self.words_as_list)}')
         logging.info(datetime.now() - start_time)
-        file_name = creat_file_name(self.alphabet, len(self.words_as_list), self.word_length)
+        file_name = create_file_name(self.alphabet, len(self.words_as_list), self.word_length)
         _write_json_words_file_for_app(file_name=file_name, words=self.words_as_list)

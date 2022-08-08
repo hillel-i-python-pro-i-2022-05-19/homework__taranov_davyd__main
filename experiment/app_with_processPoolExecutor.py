@@ -4,7 +4,7 @@ import multiprocessing
 from datetime import datetime
 
 from core import *
-from tools import init_logging, _get_alphabets_from_txt_file_as_list, creat_file_name, \
+from tools import init_logging, _get_alphabets_from_txt_file_as_list, create_file_name, \
     _write_json_words_file_for_experiment
 
 words_as_list = []
@@ -47,7 +47,7 @@ class FuzzGenerator:
 
     def end_of_function(self) -> None:
         logging.info(f'end - words: {len(words_as_list)}')
-        file_name = creat_file_name(self.alphabet, len(words_as_list), self.word_length)
+        file_name = create_file_name(self.alphabet, len(words_as_list), self.word_length)
         _write_json_words_file_for_experiment(file_name=file_name, words=words_as_list)
         logging.info(datetime.now() - self.start_time)
 
