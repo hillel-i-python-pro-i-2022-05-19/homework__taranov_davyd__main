@@ -1,3 +1,4 @@
+import pathlib
 from typing import Final, TypeAlias
 
 T_ALPHABET: TypeAlias = str
@@ -6,5 +7,6 @@ T_FILE_NAME: TypeAlias = str
 T_TXT_FILE_NAME: TypeAlias = str
 T_JSON_FILE_NAME: TypeAlias = str
 
-path_for_alphabets_for_app: Final[str] = 'app/input_alphabets.txt'
-path_for_alphabets_for_experiment: Final[str] = '../app/input_alphabets.txt'
+ROOT_PATH: Final[pathlib.Path] = pathlib.Path(__file__).parents[1]
+OUTPUT_PATH: Final[pathlib.Path] = ROOT_PATH.joinpath('results')
+INPUT_PATH: Final[pathlib.Path] = ROOT_PATH.joinpath('app/input_alphabets.txt')

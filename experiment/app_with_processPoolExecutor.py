@@ -4,8 +4,7 @@ import multiprocessing
 from datetime import datetime
 
 from core import *
-from tools import init_logging, _get_alphabets_from_txt_file_as_list, create_file_name, \
-    _write_json_words_file_for_experiment
+from tools import init_logging, _get_alphabets_from_txt_file_as_list, create_file_name, _write_json_words_file
 
 words_as_list = []
 
@@ -48,7 +47,7 @@ class FuzzGenerator:
     def end_of_function(self) -> None:
         logging.info(f'end - words: {len(words_as_list)}')
         file_name = create_file_name(self.alphabet, len(words_as_list), self.word_length)
-        _write_json_words_file_for_experiment(file_name=file_name, words=words_as_list)
+        _write_json_words_file(file_name=file_name, words=words_as_list)
         logging.info(datetime.now() - self.start_time)
 
 
@@ -93,9 +92,9 @@ def run(*args):
 
 
 if __name__ == '__main__':
-    words_count = 10000
+    words_count = 100
     word_length = 5
     init_logging()
-    alphabets_as_list = _get_alphabets_from_txt_file_as_list(path_for_alphabets_for_experiment)
+    alphabets_as_list = _get_alphabets_from_txt_file_as_list()
     with concurrent.futures.ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 4) as executor:
         executor.map(run, [(alphabet, words_count, word_length) for alphabet in alphabets_as_list])
