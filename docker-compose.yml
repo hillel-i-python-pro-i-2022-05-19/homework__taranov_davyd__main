@@ -9,3 +9,4 @@ services:
 
     volumes:
     #- db_data/db
+      - "./results:/wd/results"

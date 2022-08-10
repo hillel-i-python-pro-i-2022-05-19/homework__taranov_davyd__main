@@ -13,7 +13,6 @@ RUN pip install --requirement requirements.txt
 COPY ./main.py main.py
 COPY ./app app
 COPY ./tools tools
-COPY ./results results
 COPY ./core core
 COPY ./.run .run
 
