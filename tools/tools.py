@@ -15,8 +15,8 @@ def _get_urls_from_txt_file_as_list() -> T_URLS:
 
 
 
-def _added_urls_in_json_file(path: T_JSON_FILE, urls: T_URLS) -> None:
-    with open(f'{OUTPUT_PATH}/{path}', "w") as file:
+def _added_urls_in_json_file(file_name: T_JSON_FILE, urls: T_URLS) -> None:
+    with open(OUTPUT_PATH.joinpath(file_name), "w") as file:
         json.dump(urls, file, indent=2)
 
 
