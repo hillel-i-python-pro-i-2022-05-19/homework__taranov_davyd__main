@@ -160,6 +160,7 @@ cython_debug/
 #.idea/
 
 
-.results/
+results/*
+!results/.gitkeep
 .idea/*
 !.idea/
