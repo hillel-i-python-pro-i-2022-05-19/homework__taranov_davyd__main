@@ -1,11 +1,11 @@
 import argparse
 import json
 
-from core.settings import T_URLS, T_FILE_NAME, T_JSON_FILE, T_TXT_FILE, T_URL
+from core.settings import T_URLS, T_FILE_NAME, T_JSON_FILE, T_URL, INPUT_PATH, OUTPUT_PATH
 
 
-def _get_urls_from_txt_file_as_list(path: T_TXT_FILE) -> T_URLS:
-    with open(path, "r") as file:
+def _get_urls_from_txt_file_as_list() -> T_URLS:
+    with open(INPUT_PATH, "r") as file:
         data = ''
         for _ in file.readlines():
             data += _.split('\n')[0] + ','
@@ -14,8 +14,9 @@ def _get_urls_from_txt_file_as_list(path: T_TXT_FILE) -> T_URLS:
     return input_urls_as_list
 
 
+
 def _added_urls_in_json_file(path: T_JSON_FILE, urls: T_URLS) -> None:
-    with open(path, "w") as file:
+    with open(f'{OUTPUT_PATH}/{path}', "w") as file:
         json.dump(urls, file, indent=2)
 
 
@@ -23,7 +24,6 @@ def creat_file_name(url: T_URL, len_urls: int, crawling_depth: int) -> T_FILE_NA
     file_name = url.split('https://')
     file_name = '|'.join(file_name[1].split('/'))
     file_name = f'''{file_name}(urls={len_urls})(depth={crawling_depth}).json'''
-
     return file_name
 
 

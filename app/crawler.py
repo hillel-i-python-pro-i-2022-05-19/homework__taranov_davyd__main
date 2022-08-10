@@ -76,5 +76,5 @@ class Crawler:
         file_name = creat_file_name(url=self.input_url_as_str,
                                     len_urls=len(self.urls_as_list),
                                     crawling_depth=self.crawling_depth)
-        _added_urls_in_json_file(path=f'results/{file_name}', urls=self.urls_as_list)
+        _added_urls_in_json_file(path=file_name, urls=self.urls_as_list)
         logging.info(f'File created: {file_name}')
