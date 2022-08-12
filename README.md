@@ -1,13 +1,29 @@
-# My app
+# Crawler
 
 ___
 
-## Run
+## Docker
 
-### Docker
+### Run
 
-For run app in docker use:
+To run the app in docker use:
 
 ```shell
-male d-run
+make d-run
+```
+
+### Stop
+
+To stop app in docker use:
+
+```shell
+make d-stop
+```
+
+### Clean
+
+To clean up an app in docker use:
+
+```shell
+make d-purge
 ```
