@@ -1,12 +1,8 @@
 version: '3.9'
 
-#volumes:
-#  db_data: { }
 
 services:
   app:
     build: .
-
     volumes:
-      #- db_data/db
       - "./results:/wd/results:z"
