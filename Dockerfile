@@ -1,19 +1,29 @@
 FROM python:3.10
+ENV PYTHONUNBUFFERED=1
 
 ARG WORKDIR=/wd
-
-RUN apt update && apt upgrade -y
+ARG USER=user
+ARG UID=1000
 
 WORKDIR ${WORKDIR}
 
-COPY requirements.txt requirements.txt
+RUN useradd --system ${USER} --uid=${UID} && \
+    chown --recursive ${USER} ${WORKDIR}
 
-RUN pip install --requirement requirements.txt
+RUN apt update && apt upgrade -y
 
-COPY ./main.py main.py
-COPY ./app app
-COPY ./tools tools
-COPY ./core core
-COPY ./.run .run
+COPY --chown=${USER} requirements.txt requirements.txt
+
+RUN pip install --upgrade pip && \
+    pip install --requirement requirements.txt
+
+COPY --chown=${USER} ./main.py main.py
+COPY --chown=${USER} ./app app
+COPY --chown=${USER} ./tools tools
+COPY --chown=${USER} ./core core
+
+USER ${USER}
 
 ENTRYPOINT ["python", "main.py"]
+
+VOLUME ${WORKDIR}/result
