@@ -24,6 +24,4 @@ COPY --chown=${USER} ./core core
 
 USER ${USER}
 
-ENTRYPOINT ["python", "main.py"]
-
 VOLUME ${WORKDIR}/result
