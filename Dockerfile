@@ -22,8 +22,10 @@ COPY --chown=${USER} ./app app
 COPY --chown=${USER} ./tools tools
 COPY --chown=${USER} ./core core
 
+
+
 USER ${USER}
 
-ENTRYPOINT ["python", "main.py"]
+
 
 VOLUME ${WORKDIR}/result
