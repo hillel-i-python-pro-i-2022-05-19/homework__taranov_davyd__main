@@ -11,7 +11,7 @@ d-stop:
 d-purge:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_COMPOSE_BUILDKIT=1 docker-compose down --volumes --remove-orphans --rmi local
 
-.PHONY: app-result
+.PHONY: app-run
 # Shortcut
-app-result:
+app-run:
 	@python main.py --words_count $(words_count) --word_length $(word_length)
