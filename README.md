@@ -37,7 +37,7 @@ ___
 To run the app:
 
 ```shell
-make app-result words_count=100 word_length=5
+make app-result number_of_urls=100 crawling_depth=10
 ```
 
-where instead of `100` and `5` you substitute your value
+where instead of `100` and `10` you substitute your value.
