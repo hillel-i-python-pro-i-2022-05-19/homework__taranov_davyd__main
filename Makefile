@@ -11,6 +11,6 @@ d-stop:
 d-purge:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_COMPOSE_BUILDKIT=1 docker-compose down --volumes --remove-orphans --rmi local
 
-.PHONY: app-result
-app-result:
+.PHONY: app-run
+app-run:
 	@python main.py --max_number_of_urls $(number_of_urls) --crawling_depth $(crawling_depth)
