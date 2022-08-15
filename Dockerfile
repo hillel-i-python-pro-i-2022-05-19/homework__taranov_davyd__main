@@ -21,6 +21,7 @@ COPY --chown=${USER} ./main.py main.py
 COPY --chown=${USER} ./app app
 COPY --chown=${USER} ./tools tools
 COPY --chown=${USER} ./core core
+COPY --chown=${USER} ./Makefile Makefile
 
 USER ${USER}
 
